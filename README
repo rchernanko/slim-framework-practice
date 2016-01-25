@@ -1,0 +1,6 @@
+We want to create a REST API to allow users to create exercises, and to vote for other users' exercises.
+An exercise is simply a text associated with a user.
+A vote is a thumb up or thumb down attributed to an exercise by a user.
+
+The file Controller/controller.php already contains a REST endpoint to create an exercise.
+Your task is to create a second endpoint in this file that allows users to vote for an exercise.

@@ -1,6 +1,8 @@
 <?php
+namespace BusuuTest\ExerciseRepository;
 
-interface ManagerInterface
+
+interface RepositoryInterface
 {
     /**
      * Return an entity object or null if the id does not exist

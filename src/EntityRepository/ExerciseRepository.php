@@ -1,7 +1,7 @@
 <?php
+namespace BusuuTest\ExerciseRepository;
 
-
-class ExerciseManager implements ManagerInterface
+class ExerciseRepository implements RepositoryInterface
 {
     public function find($exerciseId)
     {

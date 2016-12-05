@@ -1,5 +1,5 @@
 <?php
-namespace BusuuTest\ExerciseRepository;
+namespace BusuuTest\EntityRepository;
 
 class ExerciseRepository implements RepositoryInterface
 {

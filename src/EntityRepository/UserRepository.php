@@ -1,7 +1,7 @@
 <?php
 
 
-namespace BusuuTest\ExerciseRepository;
+namespace BusuuTest\EntityRepository;
 
 
 class UserRepository implements RepositoryInterface

@@ -21,6 +21,16 @@ class Exercise
     private $text;
 
     /**
+     * @var int
+     */
+    private $totalUpVotes;
+
+    /**
+     * @var int
+     */
+    private $totalDownVotes;
+
+    /**
      * @return int
      */
     public function getId()
@@ -69,5 +79,37 @@ class Exercise
     public function setText($text)
     {
         $this->text = $text;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalUpVotes()
+    {
+        return $this->totalUpVotes;
+    }
+
+    /**
+     * @param int $totalUpVotes
+     */
+    public function setTotalUpVotes($totalUpVotes)
+    {
+        $this->totalUpVotes = $totalUpVotes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalDownVotes()
+    {
+        return $this->totalDownVotes;
+    }
+
+    /**
+     * @param int $totalDownVotes
+     */
+    public function setTotalDownVotes($totalDownVotes)
+    {
+        $this->totalDownVotes = $totalDownVotes;
     }
 }

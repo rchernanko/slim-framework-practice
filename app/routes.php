@@ -9,6 +9,6 @@ $app->post('/users/{userId}/exercises', function(Request $request, Response $res
     return $this->get(ExerciseController::class)->createExercise($request, $response, $args);
 });
 
-/**
- * Create here the voting endpoint
- */
+$app->post('/interactions/{exerciseId}/vote', function(Request $request, Response $response, $args) {
+    return $this->get(ExerciseController::class)->submitVote($request, $response, $args);
+});

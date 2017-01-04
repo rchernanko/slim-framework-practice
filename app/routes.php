@@ -9,6 +9,6 @@ $app->post('/users/{userId}/exercises', function(Request $request, Response $res
     return $this->get(ExerciseController::class)->createExercise($request, $response, $args);
 });
 
-$app->post('/interactions/{exerciseId}/vote', function(Request $request, Response $response, $args) {
+$app->post('/interactions/{exerciseId}/votes', function(Request $request, Response $response, $args) {
     return $this->get(ExerciseController::class)->submitVote($request, $response, $args);
 });

@@ -66,6 +66,7 @@ class ExerciseController
      * @param $args
      * @return Response
      */
+    //TODO wasn't sure whether to have a separate InteractionsController - 1 controller per resource (as per book) - thoughts?
     public function submitVote(Request $request, Response $response, $args)
     {
         //Get HTTP request body

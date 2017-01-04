@@ -2,7 +2,6 @@
 
 namespace BusuuTest\Entity;
 
-
 class Exercise
 {
     /**
@@ -21,14 +20,14 @@ class Exercise
     private $text;
 
     /**
-     * @var int
+     * @var Vote
      */
-    private $totalUpVotes;
+    private $vote;
 
-    /**
-     * @var int
-     */
-    private $totalDownVotes;
+    public function __construct(Vote $vote)
+    {
+        $this->vote = $vote;
+    }
 
     /**
      * @return int
@@ -82,34 +81,18 @@ class Exercise
     }
 
     /**
-     * @return int
+     * @return \BusuuTest\Entity\Vote
      */
-    public function getTotalUpVotes()
+    public function getVote()
     {
-        return $this->totalUpVotes;
+        return $this->vote;
     }
 
     /**
-     * @param int $totalUpVotes
+     * @param \BusuuTest\Entity\Vote $vote
      */
-    public function setTotalUpVotes($totalUpVotes)
+    public function setVote($vote)
     {
-        $this->totalUpVotes = $totalUpVotes;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalDownVotes()
-    {
-        return $this->totalDownVotes;
-    }
-
-    /**
-     * @param int $totalDownVotes
-     */
-    public function setTotalDownVotes($totalDownVotes)
-    {
-        $this->totalDownVotes = $totalDownVotes;
+        $this->vote = $vote;
     }
 }

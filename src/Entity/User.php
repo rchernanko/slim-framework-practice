@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BusuuTest\Entity;
-
 
 class User
 {

@@ -28,11 +28,11 @@ class Vote
     }
 
     /**
-     * @param array $userIds
+     * @param $userId
      */
-    public function setUserIds($userIds)
+    public function addUserIdToArray($userId)
     {
-        $this->userIds = $userIds;
+        $this->getUserIds()[] = $userId; //TODO not sure this will work...try out in separate project first
     }
 
     /**
@@ -57,13 +57,5 @@ class Vote
     public function getIsPositiveVote()
     {
         return $this->isPositiveVote;
-    }
-
-    /**
-     * @param boolean $isPositiveVote
-     */
-    public function setIsPositiveVote($isPositiveVote)
-    {
-        $this->isPositiveVote = $isPositiveVote;
     }
 }

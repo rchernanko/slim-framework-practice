@@ -15,6 +15,16 @@ class Vote
     private $totalVotes;
 
     /**
+     * @var int
+     */
+    private $totalPositiveVotes;
+
+    /**
+     * @var int
+     */
+    private $totalNegativeVotes;
+
+    /**
      * @var boolean
      */
     private $isPositiveVote;
@@ -22,7 +32,7 @@ class Vote
     /**
      * @return array
      */
-    public function getUserIds()
+    private function getUserIds()
     {
         return $this->userIds;
     }
@@ -49,6 +59,38 @@ class Vote
     public function setTotalVotes($totalVotes)
     {
         $this->totalVotes = $totalVotes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalPositiveVotes()
+    {
+        return $this->totalPositiveVotes;
+    }
+
+    /**
+     * @param int $totalPositiveVotes
+     */
+    public function setTotalPositiveVotes($totalPositiveVotes)
+    {
+        $this->totalPositiveVotes = $totalPositiveVotes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalNegativeVotes()
+    {
+        return $this->totalNegativeVotes;
+    }
+
+    /**
+     * @param int $totalNegativeVotes
+     */
+    public function setTotalNegativeVotes($totalNegativeVotes)
+    {
+        $this->totalNegativeVotes = $totalNegativeVotes;
     }
 
     /**

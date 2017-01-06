@@ -12,3 +12,5 @@ $app->post('/users/{userId}/exercises', function(Request $request, Response $res
 $app->post('/interactions/{exerciseId}/votes', function(Request $request, Response $response, $args) {
     return $this->get(ExerciseController::class)->submitVote($request, $response, $args);
 });
+//QUESTION - wasn't sure whether to have a separate InteractionsController
+//1 controller per resource (as per book) - thoughts?

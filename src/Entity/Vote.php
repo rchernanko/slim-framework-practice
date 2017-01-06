@@ -5,6 +5,7 @@ namespace BusuuTest\Entity;
 class Vote
 {
     /**
+     * A list of users that have voted on a given exercise
      * @var array
      */
     private $userIds = [];
@@ -25,11 +26,6 @@ class Vote
     private $totalNegativeVotes;
 
     /**
-     * @var boolean
-     */
-    private $isPositiveVote;
-
-    /**
      * @return array
      */
     private function getUserIds()
@@ -40,7 +36,7 @@ class Vote
     /**
      * @param $userId
      */
-    public function addUserIdToArray($userId)
+    public function addUserIdToArray($userId) //TODO rename this
     {
         $this->getUserIds()[] = $userId; //TODO not sure this will work...try out in separate project first
     }
@@ -91,13 +87,5 @@ class Vote
     public function setTotalNegativeVotes($totalNegativeVotes)
     {
         $this->totalNegativeVotes = $totalNegativeVotes;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsPositiveVote()
-    {
-        return $this->isPositiveVote;
     }
 }

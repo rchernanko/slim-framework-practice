@@ -60,13 +60,13 @@ class ExerciseController
     }
 
     /**
-     * Endpoint to submit a vote on an exercise. A vote can either be positive (thumbs up) or negative (thumbs down).
+     * Endpoint to submit a vote on an exercise.
+     * A vote can either be positive (thumbs up) or negative (thumbs down).
      * @param Request $request
      * @param Response $response
      * @param $args
      * @return Response
      */
-    //TODO wasn't sure whether to have a separate InteractionsController - 1 controller per resource (as per book) - thoughts?
     public function submitVote(Request $request, Response $response, $args)
     {
         //Get HTTP request body
@@ -76,8 +76,9 @@ class ExerciseController
         $voteType = $data->isPositiveVote;
 
         //Check validity of voteType
-        if (empty($voteType)) {
-            return $response->withJson(['msg' => 'Vote type missing in HTTP request body'], 400); //TODO check status code
+        //Using isset because empty would return true if isPositiveVote = false
+        if (isset($voteType)) {
+            return $response->withJson(['msg' => 'Vote type missing'], 400);
         }
 
         //Retrieve key from the HTTP request body
@@ -85,7 +86,7 @@ class ExerciseController
 
         //Check validity of userId
         if (empty($userId)) {
-            return $response->withJson(['msg' => 'User Id missing in HTTP request body'], 400); //TODO check status code
+            return $response->withJson(['msg' => 'Invalid user id'], 400);
         }
 
         //Get the exerciseId from HTTP request params
@@ -93,16 +94,16 @@ class ExerciseController
 
         //Check validity of exerciseId
         if (empty($exerciseId)) {
-            return $response->withJson(['msg' => 'Exercise Id missing in HTTP request'], 400); //TODO check the status code
+            return $response->withJson(['msg' => 'Invalid exercise id'], 400);
         }
 
         //Retrieve exercise from repository
         $exerciseRepository = new ExerciseRepository();
-        $exercise = new Exercise(new Vote()); //$exerciseRepository->find($exerciseId);
+        $exercise = $exerciseRepository->find($exerciseId);
 
         //Check exercise is returned - Perhaps this could be handled in the ExerciseRepository class
         if (empty($exercise)) {
-            return $response->withJson(['msg' => 'Exercise Id not found'], 404); //TODO check the status code
+            return $response->withJson(['msg' => 'Exercise not found'], 404);
         }
 
         //Get the vote object for this exercise
@@ -112,7 +113,7 @@ class ExerciseController
         $exerciseVotes->setTotalVotes($exerciseVotes->getTotalVotes() + 1);
 
         //Update total positive / negative votes and add userId to the array
-        if ($voteType) { //TODO check this - if vote type is true
+        if ($voteType) {
             $exerciseVotes->setTotalPositiveVotes($exerciseVotes->getTotalPositiveVotes() + 1);
             $exerciseVotes->addUserIdToArray($userId);
         } else {
@@ -123,6 +124,11 @@ class ExerciseController
         $exerciseRepository->save($exercise);
 
         // Return response
-        return $response->withJson(['status' => 'ok']);
+
+        $totalPositiveVotes = $exerciseVotes->getTotalPositiveVotes(); //TODO not sure why I can't put this in the below
+        return $response->withJson(
+            "['status' => 'ok', 'data' => ['totalVotes' => '$exerciseVotes', 'totalPositiveVotes' => $totalPositiveVotes']");
+
+        //TODO is there any abstraction I can now do?
     }
 }

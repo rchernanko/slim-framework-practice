@@ -81,14 +81,6 @@ class ExerciseController
             return $response->withJson(['msg' => 'Vote type missing'], 400);
         }
 
-        //Retrieve key from the HTTP request body
-        $userId = $data->userId;
-
-        //Check validity of userId
-        if (empty($userId)) {
-            return $response->withJson(['msg' => 'Invalid user id'], 400);
-        }
-
         //Get the exerciseId from HTTP request params
         $exerciseId = $args['exerciseId'];
 
@@ -101,34 +93,34 @@ class ExerciseController
         $exerciseRepository = new ExerciseRepository();
         $exercise = $exerciseRepository->find($exerciseId);
 
-        //Check exercise is returned - Perhaps this could be handled in the ExerciseRepository class
+        //Check exercise is returned - Perhaps this could be handled in the ExerciseRepository class + not in here
         if (empty($exercise)) {
             return $response->withJson(['msg' => 'Exercise not found'], 404);
         }
 
         //Get the vote object for this exercise
-        $exerciseVotes = $exercise->getVote();
-
-        //Update total votes
-        $exerciseVotes->setTotalVotes($exerciseVotes->getTotalVotes() + 1);
+        $exerciseVote = $exercise->getVote();
 
         //Update total positive / negative votes and add userId to the array
-        if ($voteType) {
-            $exerciseVotes->setTotalPositiveVotes($exerciseVotes->getTotalPositiveVotes() + 1);
-            $exerciseVotes->addUserIdToArray($userId);
-        } else {
-            $exerciseVotes->setTotalNegativeVotes($exerciseVotes->getTotalNegativeVotes() + 1);
-            $exerciseVotes->addUserIdToArray($userId);
-        }
+        $this->updateVoteTotals($exerciseVote, $voteType);
 
         $exerciseRepository->save($exercise);
 
         // Return response
+        $totalPositiveVotes = $exerciseVote->getTotalPositiveVotes();
 
-        $totalPositiveVotes = $exerciseVotes->getTotalPositiveVotes(); //TODO not sure why I can't put this in the below
         return $response->withJson(
-            "['status' => 'ok', 'data' => ['totalVotes' => '$exerciseVotes', 'totalPositiveVotes' => $totalPositiveVotes']");
+            "['status' => 'ok', 'data' => ['totalVotes' => '$exerciseVote', 'totalPositiveVotes' => $totalPositiveVotes']");
+    }
 
-        //TODO is there any abstraction I can now do?
+    private function updateVoteTotals(Vote $exerciseVote, $voteType)
+    {
+        $exerciseVote->setTotalVotes($exerciseVote->getTotalVotes() + 1);
+
+        if ($voteType) {
+            $exerciseVote->setTotalPositiveVotes($exerciseVote->getTotalPositiveVotes() + 1);
+        } else {
+            $exerciseVote->setTotalNegativeVotes($exerciseVote->getTotalNegativeVotes() + 1);
+        }
     }
 }

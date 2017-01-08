@@ -5,12 +5,6 @@ namespace BusuuTest\Entity;
 class Vote
 {
     /**
-     * A list of users that have voted on a given exercise
-     * @var array
-     */
-    private $userIds = [];
-
-    /**
      * @var int
      */
     private $totalVotes;
@@ -24,22 +18,6 @@ class Vote
      * @var int
      */
     private $totalNegativeVotes;
-
-    /**
-     * @return array
-     */
-    private function getUserIds()
-    {
-        return $this->userIds;
-    }
-
-    /**
-     * @param $userId
-     */
-    public function addUserIdToArray($userId) //TODO rename this
-    {
-        $this->getUserIds()[] = $userId; //TODO not sure this will work...try out in separate project first
-    }
 
     /**
      * @return int

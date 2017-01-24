@@ -14,3 +14,6 @@ $app->post('/interactions/{exerciseId}/votes', function(Request $request, Respon
 });
 //QUESTION - wasn't sure whether to have a separate InteractionsController
 //1 controller per resource (as per book) - thoughts?
+
+//ANSWER (TOTO) - It is fine to use the same controller in this instance. You have to use pragmatism, otherwise you will
+//have too many controllers

@@ -72,22 +72,24 @@ class ExerciseController
         //Get HTTP request body
         $data = json_decode($request->getBody());
 
-        //Retrieve key from the HTTP request body
-        $voteType = $data->isPositiveVote;
-
         //Check validity of voteType
         //Using isset because empty would return true if isPositiveVote = false
-        if (isset($voteType)) {
+        if (isset($data->isPositiveVote)) {
             return $response->withJson(['msg' => 'Vote type missing'], 400);
         }
 
-        //Get the exerciseId from HTTP request params
-        $exerciseId = $args['exerciseId'];
+        //Retrieve key from the HTTP request body
+        $voteType = $data->isPositiveVote;
 
         //Check validity of exerciseId
-        if (empty($exerciseId)) {
+        if (empty($args['exerciseId'])) {
             return $response->withJson(['msg' => 'Invalid exercise id'], 400);
         }
+
+        //TODO read up on isset and empty more
+
+        //Get the exerciseId from HTTP request params
+        $exerciseId = $args['exerciseId'];
 
         //Retrieve exercise from repository
         $exerciseRepository = new ExerciseRepository();

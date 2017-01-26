@@ -21,3 +21,8 @@ $container[ExerciseController::class] = function() use ($container) {
         $container[UserRepository::class]
     );
 };
+
+$container['db'] = function ($container) {
+    $config = $container['config']['db'];
+    return new mysqli($config['host'], $config['user'], $config['pass'], $config['db_name']);
+};

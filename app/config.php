@@ -17,3 +17,5 @@ $container = $app->getContainer();
 $container['config'] = $config;
 
 //TODO read a little more re: the container and DIC in slim framework
+
+//TODO get above running not on phpmyadmin and XAMMP but on an apache server / db without XAMMP

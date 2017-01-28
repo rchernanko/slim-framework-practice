@@ -131,8 +131,9 @@ $app->put('/exercises/{id}', function (Request $request, Response $response) use
 
 });
 
-//next step. contintue with SQL course in udemy
-//start to build above in mvc, using the controller etc -
+//next step. contintue with SQL course in udemy. learn a little more about prepared statements
+//start to build above in mvc, using the controller etc - with dependency injection
+
 //build out a little further e.g. find specific exercise
 //then start to read through ORM
 

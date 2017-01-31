@@ -83,19 +83,18 @@ class ExerciseRepository implements RepositoryInterface
     {
         $mysqli = $container['db'];
 
-        $query = "INSERT INTO exercises (exerciseId, author, exerciseText) VALUES (?,?,?)";
+        $query = "INSERT INTO exercises (author, exerciseText) VALUES (?,?)";
 
         $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("iss", $exerciseId, $author, $exerciseText);
+        $stmt->bind_param("ss", $author, $exerciseText);
 
-        $exerciseId = $request->getParsedBody()['exerciseId'];
         $author = $request->getParsedBody()['author'];
         $exerciseText = $request->getParsedBody()['exerciseText'];
 
         $stmt->execute();
 
-        return $response->withJson("Exercise $exerciseId has been created");
+        return $response->withJson("Exercise has been created");
 
         //TODO add a status code too
         //TODO what if the above query fails to execute? Make more robust
@@ -107,13 +106,12 @@ class ExerciseRepository implements RepositoryInterface
 
         $id = $request->getAttribute('id');
 
-        $query = "UPDATE exercises SET exerciseId = ?, author = ?, exerciseText = ? WHERE exercises.exerciseId = $id";
+        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $id";
 
         $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("iss", $exerciseId, $author, $exerciseText);
+        $stmt->bind_param("ss", $author, $exerciseText);
 
-        $exerciseId = $request->getParsedBody()['exerciseId'];
         $author = $request->getParsedBody()['author'];
         $exerciseText = $request->getParsedBody()['exerciseText'];
 

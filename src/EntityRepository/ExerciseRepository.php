@@ -19,7 +19,7 @@ class ExerciseRepository implements RepositoryInterface
         }
 
         if (isset($data)) {
-            return $response->withJson($data); //TODO add a status code too
+            return $response->withJson($data, 200);
         }
 
         return $response->withJson(['msg' => 'No exercises found'], 404);
@@ -40,7 +40,7 @@ class ExerciseRepository implements RepositoryInterface
         }
 
         if (isset($data)) {
-            return $response->withJson($data); //TODO add a status code too
+            return $response->withJson($data, 200);
         }
 
         return $response->withJson(['msg' => 'No exercises found'], 404);
@@ -56,8 +56,7 @@ class ExerciseRepository implements RepositoryInterface
         $query = "delete from exercises where exerciseId = $exerciseId";
         $mysqli->query($query);
 
-        return $response->withJson("Exercise with id $exerciseId has been deleted");
-        //TODO add a status code too
+        return $response->withJson("Exercise with id $exerciseId has been deleted", 200);
         //TODO what if the above query fails to execute? Or what if that exercise doesn't even exist? Make more robust
         //TODO something like the below?
 
@@ -94,9 +93,7 @@ class ExerciseRepository implements RepositoryInterface
 
         $stmt->execute();
 
-        return $response->withJson("Exercise has been created");
-
-        //TODO add a status code too
+        return $response->withJson("Exercise has been created", 200);
         //TODO what if the above query fails to execute? Make more robust
     }
 
@@ -117,9 +114,7 @@ class ExerciseRepository implements RepositoryInterface
 
         $stmt->execute();
 
-        return $response->withJson("Exercise text within $id has been updated");
-
-        //TODO add a status code too
+        return $response->withJson("Exercise text within $id has been updated", 200);
         //TODO what if the above query fails to execute? Make more robust
     }
 }

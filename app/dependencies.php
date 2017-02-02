@@ -27,15 +27,15 @@ $container['exerciseRepository'] = function () {
 
 */
 
-$container[ExerciseRepository::class] = function() {
-    return new ExerciseRepository();
+$container[ExerciseRepository::class] = function($container) {
+    return new ExerciseRepository($container);
 };
 
 $container[UserRepository::class] = function() {
     return new UserRepository();
 };
 
-$container[ExerciseController::class] = function() use ($container) {
+$container[ExerciseController::class] = function() use ($container) { //TODO understand what the use is doing here...
     return new ExerciseController(
         $container[ExerciseRepository::class],
         $container[UserRepository::class]

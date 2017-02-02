@@ -5,8 +5,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 $app->get('/exercises', function (Request $request, Response $response) use ($container) {
-    return $this->get(ExerciseController::class)->getExercises($request, $response, $container);
-    //TODO having to pass the container down into the controller / repository / entity cannot be right...
+    return $this->get(ExerciseController::class)->getExercises($request, $response);
 
     /*
      * In the above, the $this relates to the container I am using in the above
@@ -22,19 +21,19 @@ $app->get('/exercises', function (Request $request, Response $response) use ($co
 });
 
 $app->get('/exercises/{id}', function (Request $request, Response $response) use ($container) {
-    return $this->get(ExerciseController::class)->getExercise($request, $response, $container);
+    $this->get(ExerciseController::class)->getExercise($request, $response);
 });
 
 $app->delete('/exercises/{id}', function (Request $request, Response $response) use ($container) {
-    return $this->get(ExerciseController::class)->deleteExercise($request, $response, $container);
+    return $this->get(ExerciseController::class)->deleteExercise($request, $response);
 });
 
 $app->post('/exercises', function (Request $request, Response $response) use ($container) {
-    return $this->get(ExerciseController::class)->saveExercise($request, $response, $container);
+    return $this->get(ExerciseController::class)->saveExercise($request, $response);
 });
 
 $app->put('/exercises/{id}', function (Request $request, Response $response) use ($container) {
-    return $this->get(ExerciseController::class)->updateExercise($request, $response, $container);
+    return $this->get(ExerciseController::class)->updateExercise($request, $response);
 });
 
 /**

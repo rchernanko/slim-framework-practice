@@ -2,13 +2,17 @@
 namespace BusuuTest\EntityRepository;
 
 use Slim\Container;
-use Slim\Http\Request;
+use Throwable;
+
+/*
+ * TODO
+ *
+ * create an abstract class that implements repository interface
+ * give that a constructor
+ * then going forward, every time i add a new repository, it should have access to the container and values
+ */
 
 class ExerciseRepository implements RepositoryInterface
-
-//create an abstract class that implements repository interface
-//give that a constructor
-//then going forward, every time i add a new repository, it should have access to the container and values
 
 {
     private $container;
@@ -24,101 +28,107 @@ class ExerciseRepository implements RepositoryInterface
 
     public function findAll()
     {
-        //TODO I should probably make this a prepared statement too
-        //TODO make more robust...what if the query fails for example?
-
         $query = "select * from exercises";
-        $result = $this->container['db']->query($query);
-
-        $data = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-
-        return $data;
+        return $this->runSelectQuery($query);
     }
 
     public function find($exerciseId)
     {
-        //TODO make more robust...what if the query fails for example? What if there is no exercise data...?
-        //TODO I should probably make this a prepared statement too
-
         $query = "select * from exercises where exerciseId = $exerciseId";
-        $result = $this->container['db']->query($query);
-
-        $data = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-
-        return $data;
+        return $this->runSelectQuery($query);
     }
 
     public function delete($exerciseId)
     {
         $query = "delete from exercises where exerciseId = $exerciseId";
-        $this->container['db']->query($query);
+        $queryResults = [];
 
-        //TODO what if the above query fails to execute? Or what if that exercise doesn't even exist? Make more robust
+        $stmt = $this->container['db']->prepare($query);
 
-        //TODO handle this better
-        //return result...
+        try {
+            $stmt->execute();
+        } catch (Throwable $throwable) {
+            $queryResults['Error'] = 'Error when querying the database';
+            return $queryResults;
+        }
 
-        /*
-         *
-         * $query = mysqli_query($con, "SELECT * FROM emails WHERE email='".$email."'");
+        if ($stmt->affected_rows == 0) {
+            return $queryResults;
+        }
 
-            if(mysqli_num_rows($query) > 0){
+        $queryResults[] = "Exercise with exerciseId = $exerciseId deleted";
 
-            echo "email already exists";
-                }else{
-                  // do something
-                  if (!mysqli_query($con,$query))
-                  {
-                 die('Error: ' . mysqli_error($con));
-          }
-            }
-
-         */
+        return $queryResults;
     }
 
-    public function save(Request $request)
+    public function save($requestParams)
     {
-        //TODO what if the above query fails to execute? Make more robust
-
         $query = "INSERT INTO exercises (author, exerciseText) VALUES (?,?)";
+        $queryResults = [];
 
         $stmt = $this->container['db']->prepare($query);
 
-        $author = $request->getParsedBody()['author'];
-        $exerciseText = $request->getParsedBody()['exerciseText'];
+        try {
+            $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
+            $stmt->execute();
+        } catch (Throwable $throwable) {
+            $queryResults['Error'] = 'Error when querying the database';
+            return $queryResults;
+        }
 
-        $stmt->bind_param("ss", $author, $exerciseText);
+        if ($stmt->affected_rows == 0) {
+            return $queryResults;
+        }
 
-        $stmt->execute();
+        $queryResults[] = "Exercise saved";
 
-        //TODO handle this better
-        //return result...
+        return $queryResults;
     }
 
-    public function update($exerciseId, Request $request)
+    public function update($exerciseId, $requestParams)
     {
-        //TODO what if the above query fails to execute? Make more robust
-
         $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $exerciseId";
+        $queryResults = [];
 
         $stmt = $this->container['db']->prepare($query);
 
-        $stmt->bind_param("ss", $author, $exerciseText);
+        $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
 
-        $author = $request->getParsedBody()['author'];
-        $exerciseText = $request->getParsedBody()['exerciseText'];
+        try {
+            $stmt->execute();
+        } catch (Throwable $throwable) {
+            $queryResults['Error'] = 'Error when querying the database';
+            return $queryResults;
+        }
 
-        $stmt->execute();
+        if ($stmt->affected_rows == 0) {
+            return $queryResults;
+        }
 
-        //TODO handle this better
-        //return result...
+        $queryResults[] = "Exercise with exerciseId = $exerciseId updated";;
+
+        return $queryResults;
+    }
+
+    private function runSelectQuery($query)
+    {
+        $queryResults = [];
+
+        $stmt = $this->container['db']->prepare($query);
+
+        try {
+            $stmt->execute();
+        } catch (Throwable $throwable) {
+            $queryResults['Error'] = 'Error when querying the database';
+            return $queryResults;
+        }
+
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $queryResults[] = $row;
+        }
+
+        return $queryResults;
     }
 }

@@ -3,11 +3,6 @@
 
 namespace BusuuTest\EntityRepository;
 
-
-use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
-
 class UserRepository implements RepositoryInterface
 {
     public function find($userId)
@@ -18,21 +13,15 @@ class UserRepository implements RepositoryInterface
     {
     }
 
-    public function save(Request $request)
+    public function save($requestParams)
     {
     }
 
-    public function delete($entityId)
+    public function delete($userId)
     {
     }
 
-    public function update($entityId, Request $request)
+    public function update($userId, $requestParams)
     {
     }
-
-
-
-
-    //TODO come back to this when I start to look at ORM
-    //public function save($user){}
 }

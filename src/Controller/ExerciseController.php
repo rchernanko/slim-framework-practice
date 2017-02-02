@@ -2,13 +2,10 @@
 
 namespace BusuuTest\Controller;
 
-use BusuuTest\Entity\Exercise;
 use BusuuTest\EntityRepository\ExerciseRepository;
 use BusuuTest\EntityRepository\UserRepository;
-use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
-
 
 class ExerciseController
 {
@@ -36,13 +33,17 @@ class ExerciseController
      */
     public function getExercises(Request $request, Response $response)
     {
-        $data = $this->exerciseRepository->findAll();
+        $exercises = $this->exerciseRepository->findAll();
 
-        if (isset($data)) {
-            return $response->withJson($data, 200);
+        if (empty($exercises)) {
+            return $response->withJson(['msg' => 'No exercises found'], 404);
         }
 
-        return $response->withJson(['msg' => 'No exercises found'], 404);
+        if (array_key_exists('Error', $exercises)) {
+            return $response->withJson(['msg' => $exercises['Error']], 400);
+        }
+
+        return $response->withJson($exercises, 200);
     }
 
     /**
@@ -54,14 +55,22 @@ class ExerciseController
     public function getExercise(Request $request, Response $response)
     {
         $exerciseId = $request->getAttribute('id');
-        $data = $this->exerciseRepository->find($exerciseId);
 
-        if (isset($data)) {
-            return $response->withJson($data, 200);
+        if (!is_numeric($exerciseId)) {
+            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
         }
 
-        return $response->withJson(['msg' => 'No exercises found'], 404);
-        //TODO in my response make sure i always set application/json
+        $exercises = $this->exerciseRepository->find($exerciseId);
+
+        if (empty($exercises)) {
+            return $response->withJson(['msg' => 'No exercises found'], 404);
+        }
+
+        if (array_key_exists('Error', $exercises)) {
+            return $response->withJson(['msg' => $exercises['Error']], 400);
+        }
+
+        return $response->withJson($exercises, 200);
     }
 
     /**
@@ -73,9 +82,22 @@ class ExerciseController
     public function deleteExercise(Request $request, Response $response)
     {
         $exerciseId = $request->getAttribute('id');
-        $this->exerciseRepository->delete($exerciseId);
 
-        return $response->withJson("Exercise with id $exerciseId has been deleted", 200);
+        if (!is_numeric($exerciseId)) {
+            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
+        }
+
+        $queryResponse = $this->exerciseRepository->delete($exerciseId);
+
+        if (empty($queryResponse)) {
+            return $response->withJson(['msg' => "Exercise with exerciseId $exerciseId does not exist and so cannot be deleted"], 404);
+        }
+
+        if (array_key_exists('Error', $queryResponse)) {
+            return $response->withJson(['msg' => $queryResponse['Error']], 400);
+        }
+
+        return $response->withJson($queryResponse, 200);
     }
 
     /**
@@ -86,9 +108,24 @@ class ExerciseController
      */
     public function saveExercise(Request $request, Response $response)
     {
-        $this->exerciseRepository->save($request);
+        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['exerciseText'])) {
+            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
+        }
 
-        return $response->withJson("Exercise has been created", 200);
+        $requestParams['author'] = $request->getParsedBody()['author'];
+        $requestParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+
+        $queryResponse = $this->exerciseRepository->save($requestParams);
+
+        if (empty($queryResponse)) {
+            return $response->withJson("Exercise has not been saved", 404);
+        }
+
+        if (array_key_exists('Error', $queryResponse)) {
+            return $response->withJson(['msg' => $queryResponse['Error']], 400);
+        }
+
+        return $response->withJson($queryResponse, 200);
     }
 
     /**
@@ -101,41 +138,25 @@ class ExerciseController
     {
         $exerciseId = $request->getAttribute('id');
 
-        $this->exerciseRepository->update($exerciseId, $request);
+        if (!is_numeric($exerciseId)) {
+            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
+        }
 
-        return $response->withJson("Exercise text within $exerciseId has been updated", 200);
+        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['exerciseText'])) {
+            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
+        }
+
+        $requestBodyParams['author'] = $request->getParsedBody()['author'];
+        $requestBodyParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+
+
+        $exerciseId = $request->getAttribute('id');
+        $queryResponse = $this->exerciseRepository->update($exerciseId, $request);
+
+        if (empty($queryResponse)) {
+            return $response->withJson("Exercise has not been updated", 404);
+        }
+
+        return $response->withJson($queryResponse, 200);
     }
-
-
-
-
-
-
-
-    //TODO i think the below starts to build on ORM...come back to this as I should be using this instead of the above...
-    /**
-     * Endpoint to create an exercise. An exercise contains text submitted by a user.
-     */
-//    public function createExercise(Request $request, Response $response, $args)
-//    {
-//        $data = json_decode($request->getBody());
-//        $userId = $args['userId'];
-//
-//        // Check parameter validity
-//        if (empty($data->text)) {
-//            return $response->withJson(['msg' => 'Text is missing!'], 400);
-//        }
-//
-//        $userRepository = new UserRepository();
-//        $exerciseRepository = new ExerciseRepository();
-//
-//        // Create exercise
-//        $exercise = new Exercise();
-//        $exercise->setText($data->text);
-//        $exercise->setAuthor($userRepository->find($userId));
-//        $exerciseRepository->save($exercise);
-//
-//        // Return response
-//        return $response->withJson(['status' => 'ok']);
-//    }
 }

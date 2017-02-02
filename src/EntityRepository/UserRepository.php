@@ -10,23 +10,23 @@ use Slim\Http\Response;
 
 class UserRepository implements RepositoryInterface
 {
-    public function find($userId, Response $response, Container $container)
+    public function find($userId, Response $response)
     {
     }
 
-    public function findAll(Response $response, Container $container)
+    public function findAll(Response $response)
     {
     }
 
-    public function save(Request $request, Response $response, Container $container)
+    public function save(Request $request, Response $response)
     {
     }
 
-    public function delete($entityId, Response $response, Container $container)
+    public function delete($entityId, Response $response)
     {
     }
 
-    public function update(Request $request, Response $response, Container $container)
+    public function update(Request $request, Response $response)
     {
     }
 

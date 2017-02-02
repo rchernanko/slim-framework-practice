@@ -13,32 +13,29 @@ interface RepositoryInterface
      *
      * @param $entityId
      * @param Response $response
-     * @param Container $container
      * @return
      */
-    public function find($entityId, Response $response, Container $container);
+    public function find($entityId, Response $response);
 
     /**
      * Return all entity objects or null if none exist
      *
      * @param Response $response
-     * @param Container $container
      * @return
      */
-    public function findAll(Response $response, Container $container);
+    public function findAll(Response $response);
 
     /**
      * Delete a specific entity object
      * @param $entityId
      * @param Response $response
-     * @param Container $container
      * @return
      */
-    public function delete($entityId, Response $response, Container $container);
+    public function delete($entityId, Response $response);
 
-    public function save(Request $request, Response $response, Container $container);
+    public function save(Request $request, Response $response);
 
-    public function update(Request $request, Response $response, Container $container);
+    public function update(Request $request, Response $response);
 
     /**
      * Save entity to database

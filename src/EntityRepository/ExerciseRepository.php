@@ -49,12 +49,10 @@ class ExerciseRepository implements RepositoryInterface
         //TODO I should probably make this a prepared statement too
     }
 
-    public function delete($exerciseId, Response $response, Container $container)
+    public function delete($exerciseId, Response $response)
     {
-        $mysqli = $container['db'];
-
         $query = "delete from exercises where exerciseId = $exerciseId";
-        $mysqli->query($query);
+        $this->container['db']->query($query);
 
         return $response->withJson("Exercise with id $exerciseId has been deleted", 200);
         //TODO what if the above query fails to execute? Or what if that exercise doesn't even exist? Make more robust
@@ -78,13 +76,11 @@ class ExerciseRepository implements RepositoryInterface
          */
     }
 
-    public function save(Request $request, Response $response, Container $container)
+    public function save(Request $request, Response $response)
     {
-        $mysqli = $container['db'];
-
         $query = "INSERT INTO exercises (author, exerciseText) VALUES (?,?)";
 
-        $stmt = $mysqli->prepare($query);
+        $stmt = $this->container['db']->prepare($query);
 
         $stmt->bind_param("ss", $author, $exerciseText);
 
@@ -97,15 +93,13 @@ class ExerciseRepository implements RepositoryInterface
         //TODO what if the above query fails to execute? Make more robust
     }
 
-    public function update(Request $request, Response $response, Container $container)
+    public function update(Request $request, Response $response)
     {
-        $mysqli = $container['db'];
-
         $id = $request->getAttribute('id');
 
         $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $id";
 
-        $stmt = $mysqli->prepare($query);
+        $stmt = $this->container['db']->prepare($query);
 
         $stmt->bind_param("ss", $author, $exerciseText);
 

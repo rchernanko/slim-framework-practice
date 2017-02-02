@@ -32,62 +32,57 @@ class ExerciseController
      * Endpoint to get all exercises
      * @param Request $request
      * @param Response $response
-     * @param Container $container
      * @return Response
      */
-    public function getExercises(Request $request, Response $response, Container $container) //TODO why do i need request here?
+    public function getExercises(Request $request, Response $response)
     {
-        return $this->exerciseRepository->findAll($response, $container);
+        return $this->exerciseRepository->findAll($response);
     }
 
     /**
      * Endpoint to get a specific exercise
      * @param Request $request
      * @param Response $response
-     * @param Container $container
      * @return Response
      */
-    public function getExercise(Request $request, Response $response, Container $container)
+    public function getExercise(Request $request, Response $response)
     {
         $exerciseId = $request->getAttribute('id');
-        return $this->exerciseRepository->find($exerciseId, $response, $container);
+        return $this->exerciseRepository->find($exerciseId, $response);
     }
 
     /**
      * Endpoint to delete a specific exercise
      * @param Request $request
      * @param Response $response
-     * @param Container $container
      * @return Response
      */
-    public function deleteExercise(Request $request, Response $response, Container $container)
+    public function deleteExercise(Request $request, Response $response)
     {
         $id = $request->getAttribute('id');
-        return $this->exerciseRepository->delete($id, $response, $container);
+        return $this->exerciseRepository->delete($id, $response);
     }
 
     /**
      * Endpoint to save a new exercise to the db
      * @param Request $request
      * @param Response $response
-     * @param Container $container
      * @return mixed|Response
      */
-    public function saveExercise(Request $request, Response $response, Container $container)
+    public function saveExercise(Request $request, Response $response)
     {
-        return $this->exerciseRepository->save($request, $response, $container);
+        return $this->exerciseRepository->save($request, $response);
     }
 
     /**
      * Endpoint to update an already existing exercise
      * @param Request $request
      * @param Response $response
-     * @param Container $container
      * @return Response
      */
-    public function updateExercise(Request $request, Response $response, Container $container)
+    public function updateExercise(Request $request, Response $response)
     {
-        return $this->exerciseRepository->update($request, $response, $container);
+        return $this->exerciseRepository->update($request, $response);
     }
 
     //TODO i think the below starts to build on ORM...come back to this as I should be using this instead of the above...

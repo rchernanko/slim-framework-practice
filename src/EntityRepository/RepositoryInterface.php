@@ -8,34 +8,20 @@ use Slim\Http\Response;
 
 interface RepositoryInterface
 {
-    /**
-     * Return an entity object or null if the id does not exist //TODO make my all of below responses a lot more robust...
-     *
-     * @param $entityId
-     * @param Response $response
-     * @return
-     */
-    public function find($entityId, Response $response);
+    public function find($entityId);
 
-    /**
-     * Return all entity objects or null if none exist
-     *
-     * @param Response $response
-     * @return
-     */
-    public function findAll(Response $response);
+    public function findAll();
 
-    /**
-     * Delete a specific entity object
-     * @param $entityId
-     * @param Response $response
-     * @return
-     */
-    public function delete($entityId, Response $response);
+    public function delete($entityId);
 
-    public function save(Request $request, Response $response);
+    public function save(Request $request);
 
-    public function update(Request $request, Response $response);
+    public function update($entityId, Request $request);
+
+
+
+
+
 
     /**
      * Save entity to database

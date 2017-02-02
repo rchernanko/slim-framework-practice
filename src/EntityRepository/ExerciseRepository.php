@@ -6,57 +6,66 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 class ExerciseRepository implements RepositoryInterface
+
+//create an abstract class that implements repository interface
+//give that a constructor
+//then going forward, every time i add a new repository, it should have access to the container and values
+
 {
-    public function findAll(Response $response, Container $container)
+    private $container;
+
+    /**
+     * ExerciseRepository constructor.
+     * @param Container $container
+     */
+    public function __construct(Container $container)
     {
-        $mysqli = $container['db']; //TODO how can I reduce duplication of getting the container on every function...?
+        $this->container = $container;
+    }
+
+    public function findAll()
+    {
+        //TODO I should probably make this a prepared statement too
+        //TODO make more robust...what if the query fails for example?
 
         $query = "select * from exercises";
-        $result = $mysqli->query($query);
+        $result = $this->container['db']->query($query);
+
+        $data = [];
 
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
 
-        if (isset($data)) {
-            return $response->withJson($data, 200);
-        }
-
-        return $response->withJson(['msg' => 'No exercises found'], 404);
-
-        //TODO make more robust...what if the query fails for example?
-        //TODO I should probably make this a prepared statement too
+        return $data;
     }
 
-    public function find($exerciseId, Response $response, Container $container)
+    public function find($exerciseId)
     {
-        $mysqli = $container['db'];
+        //TODO make more robust...what if the query fails for example? What if there is no exercise data...?
+        //TODO I should probably make this a prepared statement too
 
         $query = "select * from exercises where exerciseId = $exerciseId";
-        $result = $mysqli->query($query);
+        $result = $this->container['db']->query($query);
+
+        $data = [];
 
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
 
-        if (isset($data)) {
-            return $response->withJson($data, 200);
-        }
-
-        return $response->withJson(['msg' => 'No exercises found'], 404);
-
-        //TODO make more robust...what if the query fails for example?
-        //TODO I should probably make this a prepared statement too
+        return $data;
     }
 
-    public function delete($exerciseId, Response $response)
+    public function delete($exerciseId)
     {
         $query = "delete from exercises where exerciseId = $exerciseId";
         $this->container['db']->query($query);
 
-        return $response->withJson("Exercise with id $exerciseId has been deleted", 200);
         //TODO what if the above query fails to execute? Or what if that exercise doesn't even exist? Make more robust
-        //TODO something like the below?
+
+        //TODO handle this better
+        //return result...
 
         /*
          *
@@ -76,28 +85,30 @@ class ExerciseRepository implements RepositoryInterface
          */
     }
 
-    public function save(Request $request, Response $response)
+    public function save(Request $request)
     {
+        //TODO what if the above query fails to execute? Make more robust
+
         $query = "INSERT INTO exercises (author, exerciseText) VALUES (?,?)";
 
         $stmt = $this->container['db']->prepare($query);
 
-        $stmt->bind_param("ss", $author, $exerciseText);
-
         $author = $request->getParsedBody()['author'];
         $exerciseText = $request->getParsedBody()['exerciseText'];
 
+        $stmt->bind_param("ss", $author, $exerciseText);
+
         $stmt->execute();
 
-        return $response->withJson("Exercise has been created", 200);
-        //TODO what if the above query fails to execute? Make more robust
+        //TODO handle this better
+        //return result...
     }
 
-    public function update(Request $request, Response $response)
+    public function update($exerciseId, Request $request)
     {
-        $id = $request->getAttribute('id');
+        //TODO what if the above query fails to execute? Make more robust
 
-        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $id";
+        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 
@@ -108,7 +119,7 @@ class ExerciseRepository implements RepositoryInterface
 
         $stmt->execute();
 
-        return $response->withJson("Exercise text within $id has been updated", 200);
-        //TODO what if the above query fails to execute? Make more robust
+        //TODO handle this better
+        //return result...
     }
 }

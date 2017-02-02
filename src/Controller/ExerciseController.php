@@ -36,7 +36,13 @@ class ExerciseController
      */
     public function getExercises(Request $request, Response $response)
     {
-        return $this->exerciseRepository->findAll($response);
+        $data = $this->exerciseRepository->findAll();
+
+        if (isset($data)) {
+            return $response->withJson($data, 200);
+        }
+
+        return $response->withJson(['msg' => 'No exercises found'], 404);
     }
 
     /**
@@ -48,42 +54,63 @@ class ExerciseController
     public function getExercise(Request $request, Response $response)
     {
         $exerciseId = $request->getAttribute('id');
-        return $this->exerciseRepository->find($exerciseId, $response);
+        $data = $this->exerciseRepository->find($exerciseId);
+
+        if (isset($data)) {
+            return $response->withJson($data, 200);
+        }
+
+        return $response->withJson(['msg' => 'No exercises found'], 404);
+        //TODO in my response make sure i always set application/json
     }
 
     /**
-     * Endpoint to delete a specific exercise
+     * Endpoint to delete an exercise
      * @param Request $request
      * @param Response $response
      * @return Response
      */
     public function deleteExercise(Request $request, Response $response)
     {
-        $id = $request->getAttribute('id');
-        return $this->exerciseRepository->delete($id, $response);
+        $exerciseId = $request->getAttribute('id');
+        $this->exerciseRepository->delete($exerciseId);
+
+        return $response->withJson("Exercise with id $exerciseId has been deleted", 200);
     }
 
     /**
-     * Endpoint to save a new exercise to the db
+     * Endpoint to save a new exercise
      * @param Request $request
      * @param Response $response
-     * @return mixed|Response
+     * @return Response
      */
     public function saveExercise(Request $request, Response $response)
     {
-        return $this->exerciseRepository->save($request, $response);
+        $this->exerciseRepository->save($request);
+
+        return $response->withJson("Exercise has been created", 200);
     }
 
     /**
-     * Endpoint to update an already existing exercise
+     * Endpoint to update an existing exercise
      * @param Request $request
      * @param Response $response
      * @return Response
      */
     public function updateExercise(Request $request, Response $response)
     {
-        return $this->exerciseRepository->update($request, $response);
+        $exerciseId = $request->getAttribute('id');
+
+        $this->exerciseRepository->update($exerciseId, $request);
+
+        return $response->withJson("Exercise text within $exerciseId has been updated", 200);
     }
+
+
+
+
+
+
 
     //TODO i think the below starts to build on ORM...come back to this as I should be using this instead of the above...
     /**

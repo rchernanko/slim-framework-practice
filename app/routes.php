@@ -21,7 +21,7 @@ $app->get('/exercises', function (Request $request, Response $response) use ($co
 });
 
 $app->get('/exercises/{id}', function (Request $request, Response $response) use ($container) {
-    $this->get(ExerciseController::class)->getExercise($request, $response);
+    return $this->get(ExerciseController::class)->getExercise($request, $response);
 });
 
 $app->delete('/exercises/{id}', function (Request $request, Response $response) use ($container) {

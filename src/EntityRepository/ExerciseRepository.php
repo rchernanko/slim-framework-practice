@@ -40,8 +40,14 @@ class ExerciseRepository implements RepositoryInterface
 
     public function delete($exerciseId)
     {
-        $query = "delete from exercises where exerciseId = $exerciseId";
         $queryResults = [];
+
+        if(empty($this->find($exerciseId))) {
+            $queryResults['Error'] = 'Exercise to delete does not exist';
+            return $queryResults;
+        }
+
+        $query = "delete from exercise where exerciseId = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 
@@ -92,9 +98,8 @@ class ExerciseRepository implements RepositoryInterface
 
         $stmt = $this->container['db']->prepare($query);
 
-        $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
-
         try {
+            $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
             $stmt->execute();
         } catch (Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';

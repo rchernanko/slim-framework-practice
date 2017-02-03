@@ -40,7 +40,7 @@ class ExerciseController
         }
 
         if (array_key_exists('Error', $exercises)) {
-            return $response->withJson(['msg' => $exercises['Error']], 400);
+            return $response->withJson(['msg' => $exercises['Error']], 500); //Server side error, hence the 500
         }
 
         return $response->withJson($exercises, 200);
@@ -67,7 +67,7 @@ class ExerciseController
         }
 
         if (array_key_exists('Error', $exercises)) {
-            return $response->withJson(['msg' => $exercises['Error']], 400);
+            return $response->withJson(['msg' => $exercises['Error']], 500);
         }
 
         return $response->withJson($exercises, 200);
@@ -94,7 +94,7 @@ class ExerciseController
         }
 
         if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['msg' => $queryResponse['Error']], 400);
+            return $response->withJson(['msg' => $queryResponse['Error']], 500);
         }
 
         return $response->withJson($queryResponse, 200);
@@ -109,11 +109,15 @@ class ExerciseController
     public function saveExercise(Request $request, Response $response)
     {
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['exerciseText'])) {
-            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400); //fine
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
         $requestParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+
+        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['exerciseText'])) {
+            return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
+        }
 
         $queryResponse = $this->exerciseRepository->save($requestParams);
 
@@ -122,10 +126,10 @@ class ExerciseController
         }
 
         if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['msg' => $queryResponse['Error']], 400);
+            return $response->withJson(['msg' => $queryResponse['Error']], 500);
         }
 
-        return $response->withJson($queryResponse, 200);
+        return $response->withJson($queryResponse, 200); //fine
     }
 
     /**
@@ -146,15 +150,21 @@ class ExerciseController
             return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
         }
 
-        $requestBodyParams['author'] = $request->getParsedBody()['author'];
-        $requestBodyParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['exerciseText'])) {
+            return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
+        }
 
+        $requestParams['author'] = $request->getParsedBody()['author'];
+        $requestParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
 
-        $exerciseId = $request->getAttribute('id');
-        $queryResponse = $this->exerciseRepository->update($exerciseId, $request);
+        $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
+
+        if (array_key_exists('Error', $queryResponse)) {
+            return $response->withJson(['msg' => $queryResponse['Error']], 500);
+        }
 
         if (empty($queryResponse)) {
-            return $response->withJson("Exercise has not been updated", 404);
+            return $response->withJson(['msg' => "Exercise with exerciseId $exerciseId does not exist and so cannot be updated"], 404);
         }
 
         return $response->withJson($queryResponse, 200);

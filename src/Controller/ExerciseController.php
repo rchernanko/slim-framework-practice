@@ -108,14 +108,14 @@ class ExerciseController
      */
     public function saveExercise(Request $request, Response $response)
     {
-        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['exerciseText'])) {
+        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
             return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400); //fine
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
-        $requestParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+        $requestParams['exerciseText'] = $request->getParsedBody()['text'];
 
-        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['exerciseText'])) {
+        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
             return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
         }
 
@@ -146,16 +146,16 @@ class ExerciseController
             return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
         }
 
-        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['exerciseText'])) {
+        if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
             return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
         }
 
-        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['exerciseText'])) {
+        if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
             return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
-        $requestParams['exerciseText'] = $request->getParsedBody()['exerciseText'];
+        $requestParams['exerciseText'] = $request->getParsedBody()['text'];
 
         $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
 

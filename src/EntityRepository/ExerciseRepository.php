@@ -47,7 +47,7 @@ class ExerciseRepository implements RepositoryInterface
             return $queryResults;
         }
 
-        $query = "delete from exercise where exerciseId = $exerciseId";
+        $query = "delete from exercises where id = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 
@@ -69,13 +69,13 @@ class ExerciseRepository implements RepositoryInterface
 
     public function save($requestParams)
     {
-        $query = "INSERT INTO exercises (author, exerciseText) VALUES (?,?)";
+        $query = "INSERT INTO exercises (author, text) VALUES (?,?)";
         $queryResults = [];
 
         $stmt = $this->container['db']->prepare($query);
 
         try {
-            $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
+            $stmt->bind_param("ss", $requestParams['author'], $requestParams['text']);
             $stmt->execute();
         } catch (Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';
@@ -100,12 +100,12 @@ class ExerciseRepository implements RepositoryInterface
             return $queryResults;
         }
 
-        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $exerciseId";
+        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.id = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 
         try {
-            $stmt->bind_param("ss", $requestParams['author'], $requestParams['exerciseText']);
+            $stmt->bind_param("ss", $requestParams['author'], $requestParams['text']);
             $stmt->execute();
         } catch (Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';

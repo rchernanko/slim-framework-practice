@@ -113,7 +113,7 @@ class ExerciseController
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
-        $requestParams['exerciseText'] = $request->getParsedBody()['text'];
+        $requestParams['text'] = $request->getParsedBody()['text'];
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
             return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
@@ -155,7 +155,7 @@ class ExerciseController
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
-        $requestParams['exerciseText'] = $request->getParsedBody()['text'];
+        $requestParams['text'] = $request->getParsedBody()['text'];
 
         $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
 

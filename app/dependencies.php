@@ -31,8 +31,8 @@ $container[ExerciseRepository::class] = function($container) {
     return new ExerciseRepository($container);
 };
 
-$container[UserRepository::class] = function() {
-    return new UserRepository();
+$container[UserRepository::class] = function($container) {
+    return new UserRepository($container);
 };
 
 $container[ExerciseController::class] = function() use ($container) { //TODO understand what the use is doing here...

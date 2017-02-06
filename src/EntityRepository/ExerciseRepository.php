@@ -1,30 +1,10 @@
 <?php
 namespace BusuuTest\EntityRepository;
 
-use Slim\Container;
 use Throwable;
 
-/*
- * TODO
- *
- * create an abstract class that implements repository interface
- * give that a constructor
- * then going forward, every time i add a new repository, it should have access to the container and values
- */
-
-class ExerciseRepository implements RepositoryInterface
-
+class ExerciseRepository extends Repository
 {
-    private $container;
-
-    /**
-     * ExerciseRepository constructor.
-     * @param Container $container
-     */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
 
     public function findAll()
     {
@@ -100,7 +80,7 @@ class ExerciseRepository implements RepositoryInterface
             return $queryResults;
         }
 
-        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.id = $exerciseId";
+        $query = "UPDATE exercises SET author = ?, text = ? WHERE exercises.id = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 

@@ -3,7 +3,7 @@
 
 namespace BusuuTest\EntityRepository;
 
-class UserRepository implements RepositoryInterface
+class UserRepository extends Repository
 {
     public function find($userId)
     {

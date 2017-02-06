@@ -28,13 +28,13 @@ class ExerciseRepository implements RepositoryInterface
 
     public function findAll()
     {
-        $query = "select * from exercises";
+        $query = "select exerciseId, author, exerciseText from exercises";
         return $this->runSelectQuery($query);
     }
 
     public function find($exerciseId)
     {
-        $query = "select * from exercises where exerciseId = $exerciseId";
+        $query = "select exerciseId, author, exerciseText from exercises where exerciseId = $exerciseId";
         return $this->runSelectQuery($query);
     }
 

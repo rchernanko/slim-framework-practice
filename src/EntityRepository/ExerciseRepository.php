@@ -93,8 +93,14 @@ class ExerciseRepository implements RepositoryInterface
 
     public function update($exerciseId, $requestParams)
     {
-        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $exerciseId";
         $queryResults = [];
+
+        if(empty($this->find($exerciseId))) {
+            $queryResults['Error'] = 'Exercise to delete does not exist';
+            return $queryResults;
+        }
+
+        $query = "UPDATE exercises SET author = ?, exerciseText = ? WHERE exercises.exerciseId = $exerciseId";
 
         $stmt = $this->container['db']->prepare($query);
 

@@ -1,13 +1,5 @@
 {
     "name": "slim-framework-practice",
-    "license": "proprietary",
-    "type": "project",
-    "authors": [
-        {
-            "name": "tdidierjean",
-            "email": "thomas.didierjean@busuu.com"
-        }
-    ],
     "require": {
         "slim/slim": "^3.0"
     },

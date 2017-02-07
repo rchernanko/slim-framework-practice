@@ -47,7 +47,7 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        $queryResults[] = "Exercise with exerciseId = $exerciseId deleted";
+        $queryResults['Success'] = "Exercise with exerciseId = $exerciseId deleted";
 
         return $queryResults;
     }
@@ -71,7 +71,7 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        $queryResults[] = "Exercise saved";
+        $queryResults['Success'] = "Exercise saved";
 
         return $queryResults;
     }
@@ -101,7 +101,7 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        $queryResults[] = "Exercise with exerciseId = $exerciseId updated";;
+        $queryResults['Success'] = "Exercise with exerciseId = $exerciseId updated";;
 
         return $queryResults;
     }

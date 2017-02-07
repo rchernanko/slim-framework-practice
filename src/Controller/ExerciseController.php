@@ -36,11 +36,11 @@ class ExerciseController
         $exercises = $this->exerciseRepository->findAll();
 
         if (empty($exercises)) {
-            return $response->withJson(['msg' => 'No exercises found'], 404);
+            return $response->withJson(['status' => 'error', 'error' => 'No exercises found'], 404);
         }
 
         if (array_key_exists('Error', $exercises)) {
-            return $response->withJson(['msg' => $exercises['Error']], 500); //Server side error, hence the 500
+            return $response->withJson(['status' => 'error', 'error' => $exercises['Error']], 500); //Server side error, hence the 500
         }
 
         return $response->withJson($exercises, 200);
@@ -57,17 +57,17 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
-            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
         $exercises = $this->exerciseRepository->find($exerciseId);
 
         if (empty($exercises)) {
-            return $response->withJson(['msg' => 'No exercises found'], 404);
+            return $response->withJson(['status' => 'error', 'error' => 'No exercises found'], 404);
         }
 
         if (array_key_exists('Error', $exercises)) {
-            return $response->withJson(['msg' => $exercises['Error']], 500);
+            return $response->withJson(['status' => 'error', 'error' => $exercises['Error']], 500);
         }
 
         return $response->withJson($exercises, 200);
@@ -84,20 +84,20 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
-            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
         $queryResponse = $this->exerciseRepository->delete($exerciseId);
 
         if (empty($queryResponse)) {
-            return $response->withJson(['msg' => "Exercise with exerciseId $exerciseId does not exist and so cannot be deleted"], 404);
+            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be deleted"], 404);
         }
 
         if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['msg' => $queryResponse['Error']], 500);
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
         }
 
-        return $response->withJson($queryResponse, 200);
+        return $response->withJson(['status' => 'ok', 'message' => $queryResponse['Success']], 200);
     }
 
     /**
@@ -109,14 +109,14 @@ class ExerciseController
     public function saveExercise(Request $request, Response $response)
     {
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400); //fine
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
         $requestParams['text'] = $request->getParsedBody()['text'];
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
-            return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);
         }
 
         $queryResponse = $this->exerciseRepository->save($requestParams);
@@ -126,10 +126,10 @@ class ExerciseController
         }
 
         if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['msg' => $queryResponse['Error']], 500);
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
         }
 
-        return $response->withJson($queryResponse, 200); //fine
+        return $response->withJson(['status' => 'ok', 'message' => $queryResponse['Success']], 200);
     }
 
     /**
@@ -143,15 +143,15 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
-            return $response->withJson(['msg' => 'Request parameter should be an integer'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['msg' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
         }
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
-            return $response->withJson(['msg' => 'Body parameters cannot be empty'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
@@ -160,13 +160,13 @@ class ExerciseController
         $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
 
         if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['msg' => $queryResponse['Error']], 500);
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
         }
 
         if (empty($queryResponse)) {
-            return $response->withJson(['msg' => "Exercise with exerciseId $exerciseId does not exist and so cannot be updated"], 404);
+            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be updated"], 404);
         }
 
-        return $response->withJson($queryResponse, 200);
+        return $response->withJson(['status' => 'ok', 'message' => $queryResponse['Success']], 200);
     }
 }

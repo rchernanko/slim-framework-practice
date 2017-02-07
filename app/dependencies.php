@@ -4,6 +4,7 @@
 use BusuuTest\EntityRepository\ExerciseRepository;
 use BusuuTest\EntityRepository\UserRepository;
 use BusuuTest\Controller\ExerciseController;
+use BusuuTest\Support\DbCommands;
 
 $container = $app->getContainer();
 
@@ -27,15 +28,19 @@ $container['exerciseRepository'] = function () {
 
 */
 
-$container[ExerciseRepository::class] = function($container) {
+$container[DbCommands::class] = function ($container) {
+    return new DbCommands($container);
+};
+
+$container[ExerciseRepository::class] = function ($container) {
     return new ExerciseRepository($container);
 };
 
-$container[UserRepository::class] = function($container) {
+$container[UserRepository::class] = function ($container) {
     return new UserRepository($container);
 };
 
-$container[ExerciseController::class] = function() use ($container) { //TODO understand what the use is doing here...
+$container[ExerciseController::class] = function () use ($container) { //TODO get to grips with what the use is doing here...
     return new ExerciseController(
         $container[ExerciseRepository::class],
         $container[UserRepository::class]

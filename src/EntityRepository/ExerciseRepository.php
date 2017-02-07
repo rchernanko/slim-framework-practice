@@ -1,21 +1,24 @@
 <?php
 namespace BusuuTest\EntityRepository;
 
+use BusuuTest\Support\DbCommands;
 use Throwable;
 
 class ExerciseRepository extends Repository
 {
 
+    //TODO abstract the duplicated code from below into some sort of support class
+
     public function findAll()
     {
-        $query = "select id as exerciseId, author as exerciseAuthor, text as exerciseText from exercises";
-        return $this->runSelectQuery($query);
+        $query = "select id as exerciseId, author as exerciseAuthor, text as exerciseText from exercisess";
+        return $this->container[DbCommands::class]->runSelectQuery($query);
     }
 
     public function find($exerciseId)
     {
         $query = "select id as exerciseId, author as exerciseAuthor, text as exerciseText from exercises where id = $exerciseId";
-        return $this->runSelectQuery($query);
+        return $this->container[DbCommands::class]->runSelectQuery($query);
     }
 
     public function delete($exerciseId)
@@ -97,28 +100,6 @@ class ExerciseRepository extends Repository
         }
 
         $queryResults[] = "Exercise with exerciseId = $exerciseId updated";;
-
-        return $queryResults;
-    }
-
-    private function runSelectQuery($query)
-    {
-        $queryResults = [];
-
-        $stmt = $this->container['db']->prepare($query);
-
-        try {
-            $stmt->execute();
-        } catch (Throwable $throwable) {
-            $queryResults['Error'] = 'Error when querying the database';
-            return $queryResults;
-        }
-
-        $result = $stmt->get_result();
-
-        while ($row = $result->fetch_assoc()) {
-            $queryResults[] = $row;
-        }
 
         return $queryResults;
     }

@@ -8,6 +8,7 @@ class ExerciseRepository extends Repository
 {
 
     //TODO abstract the duplicated code from below into some sort of support class
+    //TODO change responses to ensure best practice as per 'how to build apis that people won't hate book"
 
     public function findAll()
     {

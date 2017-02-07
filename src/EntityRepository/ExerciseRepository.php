@@ -11,7 +11,7 @@ class ExerciseRepository extends Repository
 
     public function findAll()
     {
-        $query = "select id as exerciseId, author as exerciseAuthor, text as exerciseText from exercisess";
+        $query = "select id as exerciseId, author as exerciseAuthor, text as exerciseText from exercises";
         return $this->container[DbCommands::class]->runSelectQuery($query);
     }
 

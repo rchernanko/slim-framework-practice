@@ -1,0 +1,14 @@
+class_name: ApiTester
+modules:
+    enabled:
+        - REST:
+            url: http://localhost:8080/index_test.php
+            depends: PhpBrowser
+        - Db:
+            dsn: 'mysql:host=localhost;dbname=TestExerciseDatabase'
+            user: 'root'
+            password: '123456qwerty'
+            dump: 'tests/_data/dump.sql'
+            populate: true
+            cleanup: false
+            reconnect: false

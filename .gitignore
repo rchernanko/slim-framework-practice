@@ -1,4 +1,9 @@
-.DS_Store
-.idea/
+# PHPStorm
+.idea
 
+# Composer
 /vendor/
+
+# Codeception
+/tests/_output/*
+/tests/_support/_generated/*

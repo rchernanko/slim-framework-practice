@@ -1,11 +1,31 @@
 {
-    "name": "slim-framework-practice",
-    "require": {
-        "slim/slim": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "BusuuTest\\": "src/"
-        }
+  "name": "slim-framework-practice",
+  "description": "My attempt to learn more about php, slim and api development",
+  "type": "project",
+  "require": {
+    "slim/slim": "^3.7",
+    "monolog/monolog": "^1.22"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "BusuuTest\\": "src/"
     }
+  },
+  "scripts": {
+    "lint": "find app -type f -name \"*.php\" -exec php -l {} \\;&& find public -type f -name \"*.php\" -exec php -l {} \\; && find src -type f -name \"*.php\" -exec php -l {} \\; && find tests -type f -name \"*.php\" -exec php -l {} \\;",
+    "startServer": "cd public/ && php -S localhost:8080",
+    "start": [
+      "@lint",
+      "@startServer"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Richard Chernanko",
+      "email": "rchernanko@hotmail.co.uk"
+    }
+  ]
 }

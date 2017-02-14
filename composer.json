@@ -15,7 +15,12 @@
     }
   },
   "scripts": {
-    "start": "cd public/ && php -S localhost:8080"
+    "lint": "find app -type f -name \"*.php\" -exec php -l {} \\;&& find public -type f -name \"*.php\" -exec php -l {} \\; && find src -type f -name \"*.php\" -exec php -l {} \\; && find tests -type f -name \"*.php\" -exec php -l {} \\;",
+    "startServer": "cd public/ && php -S localhost:8080",
+    "start": [
+      "@lint",
+      "@startServer"
+    ]
   },
   "authors": [
     {

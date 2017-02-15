@@ -89,8 +89,8 @@ class ExerciseController
 
         $queryResponse = $this->exerciseRepository->delete($exerciseId);
 
-        if (empty($queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be deleted"], 404);
+        if (array_key_exists('NoExerciseError', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['NoExerciseError']], 404);
         }
 
         if (array_key_exists('Error', $queryResponse)) {

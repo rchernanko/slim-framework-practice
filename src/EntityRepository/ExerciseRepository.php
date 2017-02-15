@@ -27,7 +27,7 @@ class ExerciseRepository extends Repository
         $queryResults = [];
 
         if(empty($this->find($exerciseId))) {
-            $queryResults['Error'] = 'Exercise to delete does not exist';
+            $queryResults['NoExerciseError'] = 'Exercise to delete does not exist';
             return $queryResults;
         }
 
@@ -39,10 +39,6 @@ class ExerciseRepository extends Repository
             $stmt->execute();
         } catch (Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';
-            return $queryResults;
-        }
-
-        if ($stmt->affected_rows == 0) {
             return $queryResults;
         }
 

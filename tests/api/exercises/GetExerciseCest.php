@@ -5,7 +5,7 @@ namespace BusuuTest\Tests;
 use ApiTester;
 use Codeception\Util\HttpCode;
 
-class GetCest
+class GetExerciseCest
 {
     public function testGetExercises_ExercisesExist_ReturnAllExercises(ApiTester $I)
     {
@@ -46,9 +46,9 @@ class GetCest
         ]);
     }
 
-    public function testGetExercise_InvalidUrlParam_ReturnError(ApiTester $I)
+    public function testGetExercise_InvalidUrlPath_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('invalid request param to get specific exercise');
+        $I->wantToTest('invalid request to get specific exercise');
         $I->sendGET('/exercises/1shirt');
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();

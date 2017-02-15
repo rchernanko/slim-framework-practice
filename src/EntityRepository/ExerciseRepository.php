@@ -62,9 +62,10 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        if ($stmt->affected_rows == 0) {
-            return $queryResults;
-        }
+        //TODO do i need the below??? Chat with Florent
+//        if ($stmt->affected_rows == 0) {
+//            return $queryResults;
+//        }
 
         $queryResults['Success'] = "Exercise saved";
 
@@ -76,7 +77,7 @@ class ExerciseRepository extends Repository
         $queryResults = [];
 
         if(empty($this->find($exerciseId))) {
-            $queryResults['Error'] = 'Exercise to delete does not exist';
+            $queryResults['Error'] = 'Exercise to delete does not exist'; //TODO prob change to NoExerciseError
             return $queryResults;
         }
 

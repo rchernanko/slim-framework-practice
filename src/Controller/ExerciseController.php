@@ -109,7 +109,7 @@ class ExerciseController
     public function saveExercise(Request $request, Response $response)
     {
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing or incorrect'], 400);
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
@@ -121,9 +121,10 @@ class ExerciseController
 
         $queryResponse = $this->exerciseRepository->save($requestParams);
 
-        if (empty($queryResponse)) {
-            return $response->withJson("Exercise has not been saved", 404);
-        }
+        //TODO do i need the below??? Chat with Florent
+//        if (empty($queryResponse)) {
+//            return $response->withJson("Exercise has not been saved", 404);
+//        }
 
         if (array_key_exists('Error', $queryResponse)) {
             return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);

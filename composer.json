@@ -1,7 +1,12 @@
 {
   "name": "slim-framework-practice",
   "description": "My attempt to learn more about php, slim and api development",
-  "type": "project",
+  "authors": [
+    {
+      "name": "Richard Chernanko",
+      "email": "rchernanko@hotmail.co.uk"
+    }
+  ],
   "require": {
     "slim/slim": "^3.7",
     "monolog/monolog": "^1.22"
@@ -21,11 +26,5 @@
       "@lint",
       "@startServer"
     ]
-  },
-  "authors": [
-    {
-      "name": "Richard Chernanko",
-      "email": "rchernanko@hotmail.co.uk"
-    }
-  ]
+  }
 }

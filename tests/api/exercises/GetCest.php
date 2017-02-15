@@ -20,7 +20,33 @@ class GetCest
         ]);
     }
 
-    public function testGetExercise_InvalidParam_ReturnError(ApiTester $I)
+    /*
+     * TODO for get all exercises (add to above)
+     *
+     * return $response->withJson(['status' => 'error', 'error' => 'No exercises found'], 404);
+     *
+     * return $response->withJson(['status' => 'error', 'error' => $exercises['Error']], 500); //Server side error, hence the 500
+     */
+
+    public function testGetExercise_ExerciseExists_ReturnExercise(ApiTester $I)
+    {
+        $I->wantToTest('valid request to get a specific exercise');
+        $I->sendGET('/exercises/3');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'exerciseId' => 'integer',
+            'exerciseAuthor' => 'string',
+            'exerciseText' => 'string'
+        ]);
+        $I->seeResponseContainsJson([
+            'exerciseId' => 3,
+            'exerciseAuthor' => 'Metallica',
+            'exerciseText' => 'For whom the bell tolls...time marches on woo'
+        ]);
+    }
+
+    public function testGetExercise_InvalidUrlParam_ReturnError(ApiTester $I)
     {
         $I->wantToTest('invalid request param to get specific exercise');
         $I->sendGET('/exercises/1shirt');
@@ -43,4 +69,12 @@ class GetCest
             'error' => 'No exercises found'
         ]);
     }
+
+    /*
+    * TODO for get specific exercises (add to above)
+    *
+    * return $response->withJson(['status' => 'error', 'error' => $exercises['Error']], 500);
+    *
+    */
+
 }

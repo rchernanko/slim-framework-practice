@@ -38,6 +38,10 @@ class DeleteExerciseCest
         $I->sendDELETE('/exercises/shirt');
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'status' => 'string',
+            'error' => 'string'
+        ]);
         $I->seeResponseContainsJson([
             'status' => 'error',
             'error' => 'Request parameter should be an integer'
@@ -50,6 +54,10 @@ class DeleteExerciseCest
         $I->sendDELETE('/exercises/20');
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
         $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'status' => 'string',
+            'error' => 'string'
+        ]);
         $I->seeResponseContainsJson([
             'status' => 'error',
             'error' => 'Exercise to delete does not exist'

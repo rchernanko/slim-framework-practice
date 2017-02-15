@@ -52,6 +52,10 @@ class GetExerciseCest
         $I->sendGET('/exercises/1shirt');
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'status' => 'string',
+            'error' => 'string'
+        ]);
         $I->seeResponseContainsJson([
             'status' => 'error',
             'error' => 'Request parameter should be an integer'
@@ -64,6 +68,10 @@ class GetExerciseCest
         $I->sendGET('/exercises/11');
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
         $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'status' => 'string',
+            'error' => 'string'
+        ]);
         $I->seeResponseContainsJson([
             'status' => 'error',
             'error' => 'No exercises found'

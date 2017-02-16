@@ -49,9 +49,7 @@ $container[UserRepository::class] = function ($container) {
 };
 
 $container[ExerciseController::class] = function () use ($container) {
-    return new ExerciseController(
-        $container[ExerciseRepository::class],
-        $container[UserRepository::class],
-        $container
-    );
+    $controller = new ExerciseController($container[ExerciseRepository::class], $container[UserRepository::class]);
+    $controller->setLogger($container['logger']);
+    return $controller;
 };

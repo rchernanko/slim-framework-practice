@@ -2,29 +2,28 @@
 
 namespace SlimPractice\Controller;
 
-use Slim\Container;
 use SlimPractice\EntityRepository\ExerciseRepository;
 use SlimPractice\EntityRepository\UserRepository;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use SlimPractice\Traits\LoggerAwareTrait;
 
 class ExerciseController
 {
+    use LoggerAwareTrait;
+
     private $exerciseRepository;
     private $userRepository;
-    private $container;
 
     /**
      * ExerciseController constructor.
      * @param ExerciseRepository $exerciseRepository
      * @param UserRepository $userRepository
-     * @param Container $container
      */
-    public function __construct(ExerciseRepository $exerciseRepository, UserRepository $userRepository, Container $container)
+    public function __construct(ExerciseRepository $exerciseRepository, UserRepository $userRepository)
     {
         $this->exerciseRepository = $exerciseRepository;
         $this->userRepository = $userRepository;
-        $this->container = $container;
     }
 
     /**
@@ -59,7 +58,7 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
-            $this->container['logger']->addInfo('Request parameter not in correct format for GET request for specific exercise', ['exercise/$id' => $exerciseId]);
+            $this->logError('Request parameter not in correct format for GET request for specific exercise', ['exercise/$id' => $exerciseId]);
             return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
@@ -87,7 +86,7 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
-            $this->container['logger']->addInfo('Request parameter not in correct format for DELETE request for specific exercise', ['exercise/$id' => $exerciseId]);
+            $this->logError('Request parameter not in correct format for DELETE request for specific exercise', ['exercise/$id' => $exerciseId]);
             return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 

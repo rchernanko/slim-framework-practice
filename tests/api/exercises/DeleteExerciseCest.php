@@ -28,6 +28,11 @@ class DeleteExerciseCest
             'status' => 'ok',
             'message' => 'Exercise with exerciseId = 1 deleted'
         ]);
+        $I->sendGET('/exercises/1');
+        $I->seeResponseContainsJson([
+            'status' => 'error',
+            'error' => 'No exercises found'
+        ]);
     }
 
     public function testDeleteExercise_InvalidUrlPath_ReturnError(ApiTester $I)
@@ -48,7 +53,7 @@ class DeleteExerciseCest
 
     public function testDeleteExercise_ExerciseDoesNotExist_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('delete an exercise that does not exist');
+        $I->wantToTest('attempt to delete an exercise that does not exist');
         $I->sendDELETE('/exercises/20');
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
         $I->seeResponseIsJson();

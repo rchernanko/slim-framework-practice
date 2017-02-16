@@ -21,12 +21,18 @@ class PostExerciseCest
             'status' => 'ok',
             'message' => 'Exercise saved'
         ]);
+        $I->sendGET('/exercises/11');
+        $I->seeResponseContainsJson([
+            'exerciseId' => 11,
+            'exerciseAuthor' => 'James Bond',
+            'exerciseText' => 'I fancy Moneypenny'
+        ]);
     }
 
     public function testPostExercise_MissingBodyParamAuthor_ReturnError(ApiTester $I)
     {
         $I->wantToTest('request to post exercise with missing body param \'author\'');
-        $I->sendPOST('/exercises', ['text' => 'I fancy Moneypenny']);
+        $I->sendPOST('/exercises', ['text' => 'I fancy You']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([

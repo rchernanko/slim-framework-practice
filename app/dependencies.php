@@ -17,7 +17,7 @@ $container['db'] = function ($container) use ($config) { //TODO get to grips wit
 //Add a logger
 $container['logger'] = function() {
     $logger = new Logger('my_logger');
-    $file_handler = new StreamHandler("../logs/app.log");
+    $file_handler = new StreamHandler('../logs/app.log');
     $logger->pushHandler($file_handler);
     return $logger;
 };
@@ -51,6 +51,7 @@ $container[UserRepository::class] = function ($container) {
 $container[ExerciseController::class] = function () use ($container) {
     return new ExerciseController(
         $container[ExerciseRepository::class],
-        $container[UserRepository::class]
+        $container[UserRepository::class],
+        $container
     );
 };

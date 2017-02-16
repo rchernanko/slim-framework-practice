@@ -148,7 +148,7 @@ class ExerciseController
         }
 
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing or incorrect'], 400);
         }
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {

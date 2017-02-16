@@ -1,6 +1,9 @@
 # PHPStorm
 .idea
 
+# Logging
+/logs/
+
 # Composer
 /vendor/
 

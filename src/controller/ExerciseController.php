@@ -1,9 +1,9 @@
 <?php
 
-namespace BusuuTest\Controller;
+namespace SlimPractice\Controller;
 
-use BusuuTest\EntityRepository\ExerciseRepository;
-use BusuuTest\EntityRepository\UserRepository;
+use SlimPractice\EntityRepository\ExerciseRepository;
+use SlimPractice\EntityRepository\UserRepository;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

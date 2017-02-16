@@ -1,7 +1,8 @@
 <?php
-namespace BusuuTest\EntityRepository;
 
-use BusuuTest\Support\DbCommands;
+namespace SlimPractice\EntityRepository;
+
+use SlimPractice\Support\DbCommands;
 use Throwable;
 
 class ExerciseRepository extends Repository

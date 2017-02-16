@@ -1,10 +1,9 @@
 <?php
 
-
-use BusuuTest\EntityRepository\ExerciseRepository;
-use BusuuTest\EntityRepository\UserRepository;
-use BusuuTest\Controller\ExerciseController;
-use BusuuTest\Support\DbCommands;
+use SlimPractice\Controller\ExerciseController;
+use SlimPractice\EntityRepository\ExerciseRepository;
+use SlimPractice\EntityRepository\UserRepository;
+use SlimPractice\Support\DbCommands;
 
 $container = $app->getContainer();
 

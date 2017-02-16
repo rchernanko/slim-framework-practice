@@ -1,7 +1,6 @@
 <?php
 
-
-namespace BusuuTest\EntityRepository;
+namespace SlimPractice\EntityRepository;
 
 use Slim\Container;
 

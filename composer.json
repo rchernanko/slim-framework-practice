@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BusuuTest\\": "src/"
+      "SlimPractice\\": "src/"
     }
   },
   "scripts": {

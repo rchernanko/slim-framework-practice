@@ -1,6 +1,6 @@
 <?php
 
-namespace BusuuTest\Support;
+namespace SlimPractice\Support;
 
 use Slim\Container;
 use Throwable;

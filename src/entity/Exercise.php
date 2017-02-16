@@ -1,7 +1,6 @@
 <?php
 
-namespace BusuuTest\Entity;
-
+namespace SlimPractice\Entity;
 
 class Exercise
 {

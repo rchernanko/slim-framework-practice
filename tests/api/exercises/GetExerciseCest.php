@@ -1,6 +1,6 @@
 <?php
 
-namespace BusuuTest\Tests;
+namespace SlimPractice\Tests;
 
 use ApiTester;
 use Codeception\Util\HttpCode;

@@ -1,10 +1,6 @@
 <?php
-namespace BusuuTest\EntityRepository;
 
-
-use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+namespace SlimPractice\EntityRepository;
 
 interface RepositoryInterface
 {

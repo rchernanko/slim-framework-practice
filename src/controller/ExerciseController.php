@@ -160,12 +160,12 @@ class ExerciseController
 
         $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
 
-        if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
+        if (array_key_exists('NoExerciseError', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['NoExerciseError']], 404);
         }
 
-        if (empty($queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be updated"], 404);
+        if (array_key_exists('Error', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
         }
 
         return $response->withJson(['status' => 'ok', 'message' => $queryResponse['Success']], 200);

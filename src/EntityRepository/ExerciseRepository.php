@@ -63,7 +63,7 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        //TODO do i need the below??? Chat with Florent
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
 //        if ($stmt->affected_rows == 0) {
 //            return $queryResults;
 //        }
@@ -94,7 +94,7 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        //TODO do i need the below??? Chat with Florent
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
 //        if ($stmt->affected_rows == 0) {
 //            return $queryResults;
 //        }

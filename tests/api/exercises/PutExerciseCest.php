@@ -63,7 +63,7 @@ class PutExerciseCest
 
     public function testPutExercise_MissingBodyParamText_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('request to post exercise with missing body param \'text\'');
+        $I->wantToTest('request to update exercise with missing body param \'text\'');
         $I->sendPUT('/exercises/11', ['author' => 'James Bond']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
@@ -79,7 +79,7 @@ class PutExerciseCest
 
     public function testPutExercise_EmptyBodyParam_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('request to post exercise with empty body param');
+        $I->wantToTest('request to update exercise with empty body param');
         $I->sendPUT('/exercises/11', ['author' => 'James Bond', 'text' => '']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
@@ -95,7 +95,7 @@ class PutExerciseCest
 
     public function testPutExercise_BodyParamSpeltIncorrectly_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('request to post exercise with an incorrectly spelt body param');
+        $I->wantToTest('request to update exercise with an incorrectly spelt body param');
         $I->sendPUT('/exercises/11', ['author' => 'James Bond', 'test' => 'Hello this is a test']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
@@ -111,7 +111,7 @@ class PutExerciseCest
 
     public function testPutExercise_ExerciseDoesNotExist_ReturnError(ApiTester $I)
     {
-        $I->wantToTest('attempt to delete an exercise that does not exist');
+        $I->wantToTest('attempt to update an exercise that does not exist');
         $I->sendPUT('/exercises/20', ['author' => 'James Bond', 'text' => 'I bloody love Moneypenny']);
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
         $I->seeResponseIsJson();
@@ -124,47 +124,30 @@ class PutExerciseCest
             'error' => 'Exercise with exerciseId 20 does not exist and so cannot be updated'
         ]);
     }
-}
 
     /*
-       TODO for put exercises (add to above)
 
-        if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);}
+    TODO - get this working - need to resolve issues with is_string in the controller
 
-
-        TODO this should fail because the author value is not a string, but an integer...work out more
-        public function testPostExercise_InvalidBodyParamType_ReturnError(ApiTester $I)
-        {
-            $I->wantToTest('request to post exercise with invalid body param type');
-            $I->sendPut('/exercises/10', ['author' => 123456, 'text' => 'Hello this is a test']);
-            $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-            $I->seeResponseIsJson();
-            $I->seeResponseMatchesJsonType([
-                'status' => 'string',
-                'error' => 'string'
-            ]);
-            $I->seeResponseContainsJson([
-                'status' => 'error',
-                'error' => 'TODO'
-            ]);
-        }
-
-        TODO this should fail because there are too many params...work out more
-        public function testPutExercise_TooManyBodyParams_ReturnError(ApiTester $I)
-        {
-            $I->wantToTest('request to post exercise with too many body params');
-            $I->sendPut('/exercises/10', ['author' => 'richard chernanko', 'text' => 'Hello this is a test', 'thirdParam' => 'I should not be here']);
-            $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-            $I->seeResponseIsJson();
-            $I->seeResponseMatchesJsonType([
-                'status' => 'string',
-                'error' => 'string'
-            ]);
-            $I->seeResponseContainsJson([
-                'status' => 'error',
-                'error' => 'TODO'
-            ]);
+        public function testPutExercise_InvalidBodyParamType_ReturnError(ApiTester $I)
+    {
+        $I->wantToTest('request to update exercise with invalid body param type');
+        $I->sendPOST('/exercises', ['author' => [], 'text' => 'Hello this is a test']);
+        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'status' => 'string',
+            'error' => 'string'
+        ]);
+        $I->seeResponseContainsJson([
+            'status' => 'error',
+            'error' => 'At least 1 body parameter is of the incorrect type'
+        ]);
     }
 
+     TODO for post exercise (add to above)
+
+     $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
+
      */
+}

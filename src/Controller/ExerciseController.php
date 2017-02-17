@@ -122,9 +122,13 @@ class ExerciseController
             return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);
         }
 
+//        if(!is_string($request->getParsedBody()['author'] || !is_string($request->getParsedBody()['text']))) {
+//            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter is of the incorrect type'], 400);
+//        }
+
         $queryResponse = $this->exerciseRepository->save($requestParams);
 
-        //TODO do i need the below??? Chat with Florent
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
 //        if (empty($queryResponse)) {
 //            return $response->withJson("Exercise has not been saved", 404);
 //        }
@@ -153,6 +157,10 @@ class ExerciseController
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
             return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing or incorrect'], 400);
         }
+
+//        if(!is_string($request->getParsedBody()['author'] || !is_string($request->getParsedBody()['text']))) {
+//            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter is of the incorrect type'], 400);
+//        }
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
             return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);

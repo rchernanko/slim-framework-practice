@@ -94,16 +94,13 @@ class PostExerciseCest
     }
 
     /*
-    * TODO for post exercise (add to above)
-    *
-    * $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
-    *
 
-    TODO this should fail because the author value is not a string, but an integer...work out more
+    TODO - get this working - need to resolve issues with is_string in the controller
+
     public function testPostExercise_InvalidBodyParamType_ReturnError(ApiTester $I)
     {
         $I->wantToTest('request to post exercise with invalid body param type');
-        $I->sendPOST('/exercises', ['author' => 123456, 'text' => 'Hello this is a test']);
+        $I->sendPOST('/exercises', ['author' => [], 'text' => 'Hello this is a test']);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
@@ -112,27 +109,14 @@ class PostExerciseCest
         ]);
         $I->seeResponseContainsJson([
             'status' => 'error',
-            'error' => 'Body parameters cannot be empty'
-        ]);
-    }
-
-    TODO this should fail because there are too many params...work out more
-    public function testPostExercise_TooManyBodyParams_ReturnError(ApiTester $I)
-    {
-        $I->wantToTest('request to post exercise with too many body params');
-        $I->sendPOST('/exercises', ['author' => 'richard chernanko', 'text' => 'Hello this is a test', 'thirdParam' => 'I should not be here']);
-        $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-        $I->seeResponseIsJson();
-        $I->seeResponseMatchesJsonType([
-            'status' => 'string',
-            'error' => 'string'
-        ]);
-        $I->seeResponseContainsJson([
-            'status' => 'error',
-            'error' => 'Body parameters cannot be empty'
+            'error' => 'At least 1 body parameter is of the incorrect type'
         ]);
     }
 
 
-     */
+     TODO for post exercise (add to above)
+
+     $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
+
+    */
 }

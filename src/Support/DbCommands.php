@@ -1,9 +1,8 @@
 <?php
 
-namespace BusuuTest\Support;
+namespace SlimPractice\Support;
 
 use Slim\Container;
-use Throwable;
 
 class DbCommands
 {
@@ -31,7 +30,7 @@ class DbCommands
 
         try {
             $stmt->execute();
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';
             return $queryResults;
         }

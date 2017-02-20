@@ -1,17 +1,18 @@
 <?php
 
-namespace BusuuTest\Controller;
+namespace SlimPractice\Controller;
 
-use BusuuTest\EntityRepository\ExerciseRepository;
-use BusuuTest\EntityRepository\UserRepository;
+use SlimPractice\EntityRepository\ExerciseRepository;
+use SlimPractice\EntityRepository\UserRepository;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use SlimPractice\Traits\LoggerAwareTrait;
 
 class ExerciseController
 {
-    /** @var  ExerciseRepository */
+    use LoggerAwareTrait;
+
     private $exerciseRepository;
-    /** @var  UserRepository */
     private $userRepository;
 
     /**
@@ -57,6 +58,7 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
+            $this->logError('Request parameter not in correct format for GET request for specific exercise', ['exercise/$id' => $exerciseId]);
             return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
@@ -84,13 +86,14 @@ class ExerciseController
         $exerciseId = $request->getAttribute('id');
 
         if (!is_numeric($exerciseId)) {
+            $this->logError('Request parameter not in correct format for DELETE request for specific exercise', ['exercise/$id' => $exerciseId]);
             return $response->withJson(['status' => 'error', 'error' => 'Request parameter should be an integer'], 400);
         }
 
         $queryResponse = $this->exerciseRepository->delete($exerciseId);
 
-        if (empty($queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be deleted"], 404);
+        if (array_key_exists('NoExerciseError', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['NoExerciseError']], 404);
         }
 
         if (array_key_exists('Error', $queryResponse)) {
@@ -109,7 +112,7 @@ class ExerciseController
     public function saveExercise(Request $request, Response $response)
     {
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing or incorrect'], 400);
         }
 
         $requestParams['author'] = $request->getParsedBody()['author'];
@@ -119,11 +122,16 @@ class ExerciseController
             return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);
         }
 
+//        if(!is_string($request->getParsedBody()['author'] || !is_string($request->getParsedBody()['text']))) {
+//            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter is of the incorrect type'], 400);
+//        }
+
         $queryResponse = $this->exerciseRepository->save($requestParams);
 
-        if (empty($queryResponse)) {
-            return $response->withJson("Exercise has not been saved", 404);
-        }
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
+//        if (empty($queryResponse)) {
+//            return $response->withJson("Exercise has not been saved", 404);
+//        }
 
         if (array_key_exists('Error', $queryResponse)) {
             return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
@@ -147,8 +155,12 @@ class ExerciseController
         }
 
         if (!isset($request->getParsedBody()['author']) || !isset($request->getParsedBody()['text'])) {
-            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing'], 400);
+            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter missing or incorrect'], 400);
         }
+
+//        if(!is_string($request->getParsedBody()['author'] || !is_string($request->getParsedBody()['text']))) {
+//            return $response->withJson(['status' => 'error', 'error' => 'At least 1 body parameter is of the incorrect type'], 400);
+//        }
 
         if (empty($request->getParsedBody()['author']) || empty($request->getParsedBody()['text'])) {
             return $response->withJson(['status' => 'error', 'error' => 'Body parameters cannot be empty'], 400);
@@ -159,12 +171,12 @@ class ExerciseController
 
         $queryResponse = $this->exerciseRepository->update($exerciseId, $requestParams);
 
-        if (array_key_exists('Error', $queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
+        if (array_key_exists('NoExerciseError', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['NoExerciseError']], 404);
         }
 
-        if (empty($queryResponse)) {
-            return $response->withJson(['status' => 'error', 'error' => "Exercise with exerciseId $exerciseId does not exist and so cannot be updated"], 404);
+        if (array_key_exists('Error', $queryResponse)) {
+            return $response->withJson(['status' => 'error', 'error' => $queryResponse['Error']], 500);
         }
 
         return $response->withJson(['status' => 'ok', 'message' => $queryResponse['Success']], 200);

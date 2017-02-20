@@ -1,7 +1,8 @@
 <?php
-namespace BusuuTest\EntityRepository;
 
-use BusuuTest\Support\DbCommands;
+namespace SlimPractice\EntityRepository;
+
+use SlimPractice\Support\DbCommands;
 use Throwable;
 
 class ExerciseRepository extends Repository
@@ -27,7 +28,7 @@ class ExerciseRepository extends Repository
         $queryResults = [];
 
         if(empty($this->find($exerciseId))) {
-            $queryResults['Error'] = 'Exercise to delete does not exist';
+            $queryResults['NoExerciseError'] = 'Exercise to delete does not exist';
             return $queryResults;
         }
 
@@ -39,10 +40,6 @@ class ExerciseRepository extends Repository
             $stmt->execute();
         } catch (Throwable $throwable) {
             $queryResults['Error'] = 'Error when querying the database';
-            return $queryResults;
-        }
-
-        if ($stmt->affected_rows == 0) {
             return $queryResults;
         }
 
@@ -66,9 +63,10 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        if ($stmt->affected_rows == 0) {
-            return $queryResults;
-        }
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
+//        if ($stmt->affected_rows == 0) {
+//            return $queryResults;
+//        }
 
         $queryResults['Success'] = "Exercise saved";
 
@@ -80,7 +78,7 @@ class ExerciseRepository extends Repository
         $queryResults = [];
 
         if(empty($this->find($exerciseId))) {
-            $queryResults['Error'] = 'Exercise to delete does not exist';
+            $queryResults['NoExerciseError'] = "Exercise with exerciseId $exerciseId does not exist and so cannot be updated";
             return $queryResults;
         }
 
@@ -96,9 +94,10 @@ class ExerciseRepository extends Repository
             return $queryResults;
         }
 
-        if ($stmt->affected_rows == 0) {
-            return $queryResults;
-        }
+        //TODO do i need the below??? Work out when / a prepared statement can have 0 affected rows
+//        if ($stmt->affected_rows == 0) {
+//            return $queryResults;
+//        }
 
         $queryResults['Success'] = "Exercise with exerciseId = $exerciseId updated";;
 

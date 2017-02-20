@@ -1,6 +1,6 @@
 <?php
 
-use BusuuTest\Controller\ExerciseController;
+use SlimPractice\Controller\ExerciseController;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

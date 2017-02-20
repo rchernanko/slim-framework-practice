@@ -12,11 +12,12 @@
     "monolog/monolog": "^1.22"
   },
   "require-dev": {
-    "codeception/codeception": "^2.2"
+    "codeception/codeception": "^2.2",
+    "mockery/mockery": "^0.9.8"
   },
   "autoload": {
     "psr-4": {
-      "BusuuTest\\": "src/"
+      "SlimPractice\\": "src/"
     }
   },
   "scripts": {

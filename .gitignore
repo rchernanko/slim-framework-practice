@@ -1,9 +1,12 @@
 # PHPStorm
 .idea
 
+# Logging
+/logs/
+
 # Composer
 /vendor/
 
 # Codeception
-/tests/_output/*
-/tests/_support/_generated/*
+/tests/_output/
+/tests/_support/_generated/
